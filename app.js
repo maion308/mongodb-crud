@@ -86,6 +86,7 @@ const main = async () => {
         // await createListing(client, games)
         // await findAll(client)
         await findById(client, ObjectId("6308561a5ce17d1aed197476"))
+        await updateListRating(client, ObjectId("6308561a5ce17d1aed197477"), 9)
     } catch (error) {
         console.error(error)
     } finally {
@@ -132,6 +133,20 @@ const findById = async (client, listId) => {
     if(result) {
         console.log(`Found listing with id ${listId}`)
         console.log(result)
+    } else {
+        console.log(`No listing found with id: ${listId}`)
+    }
+}
+
+// 3. Update
+const updateListRating = async (client, listId, updateRating) => {
+    const result = await client 
+    .db(db)
+    .collection(collection)
+    .updateOne({_id: listId}, {$set: {rating: updateRating}})
+
+    if(result) {
+        console.log(`${result.modifiedCount} listing updated`)
     } else {
         console.log(`No listing found with id: ${listId}`)
     }
