@@ -83,8 +83,8 @@ let games = [
 const main = async () => {
     try {
         await client.connect()
-        await createListing(client, games)
-
+        // await createListing(client, games)
+        await findAll(client)
     } catch (error) {
         console.error(error)
     } finally {
@@ -94,7 +94,8 @@ const main = async () => {
 
 main().catch(console.error)
 
-
+// CRUD Operations
+// 1. Create
 const createListing = async (client, document) => {
     const result = await client 
     .db(db)
@@ -103,4 +104,19 @@ const createListing = async (client, document) => {
 
     console.log(`${result.insertedCount} listings created with id(s)`)
     console.log(result.insertedIds)
+}
+
+// 2. Read
+const findAll = async (client) => {
+    const cursor = await client 
+    .db(db)
+    .collection(collection)
+    .find({})
+    console.log(`${cursor.matchedCount} listing(s) found`)
+    if(cursor) {
+        console.log('here is your collection')
+    }
+    for await(const doc of cursor) {
+        console.log(doc)
+    }
 }
