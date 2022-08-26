@@ -84,9 +84,11 @@ const main = async () => {
     try {
         await client.connect()
         // await createListing(client, games)
-        // await findAll(client)
-        await findById(client, ObjectId("6308561a5ce17d1aed197476"))
-        await updateListRating(client, ObjectId("6308561a5ce17d1aed197477"), 9)
+        await findAll(client)
+        // await findById(client, ObjectId("6308561a5ce17d1aed197476"))
+        // await updateListRating(client, ObjectId("6308561a5ce17d1aed197477"), 9)
+        // await deleteById(client, ObjectId("6308561a5ce17d1aed197475"))
+        
     } catch (error) {
         console.error(error)
     } finally {
@@ -97,12 +99,23 @@ const main = async () => {
 main().catch(console.error)
 
 // CRUD Operations
-// 1. Create
+// 1a. Create many
 const createListing = async (client, document) => {
     const result = await client 
     .db(db)
     .collection(collection)
     .insertMany(document)
+
+    console.log(`${result.insertedCount} listings created with id(s)`)
+    console.log(result.insertedIds)
+}
+
+// 1b. Create one
+const createOneListing = async (client, document) => {
+    const result = await client 
+    .db(db)
+    .collection(collection)
+    .insertOne(document)
 
     console.log(`${result.insertedCount} listings created with id(s)`)
     console.log(result.insertedIds)
@@ -114,13 +127,16 @@ const findAll = async (client) => {
     .db(db)
     .collection(collection)
     .find({})
-    console.log(`${cursor.matchedCount} listing(s) found`)
-    if(cursor) {
+
+    if (cursor) {
         console.log('here is your collection')
+    } else {
+        console.log('No listings found')
     }
+
     for await(const doc of cursor) {
         console.log(doc)
-    }
+    } 
 }
 
 // 2b. Read (find listing by id by id)
@@ -149,5 +165,18 @@ const updateListRating = async (client, listId, updateRating) => {
         console.log(`${result.modifiedCount} listing updated`)
     } else {
         console.log(`No listing found with id: ${listId}`)
+    }
+}
+
+// 4. Delete (Destroy)
+const deleteById = async (client, listId) => {
+    const result = await client 
+    .db(db)
+    .collection(collection)
+    .deleteOne({_id: listId})
+
+    if(result) {
+        console.log(`Successfully deleted listing with id: ${listId}`)
+        console.log(result)
     }
 }
