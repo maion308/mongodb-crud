@@ -1,0 +1,28 @@
+{
+  "name": "mongodb-crud",
+  "version": "1.0.0",
+  "description": "simple mongodb crud operations using node driver",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maion308/mongodb-crud.git"
+  },
+  "keywords": [
+    "mongodb",
+    "crud",
+    "node",
+    "js"
+  ],
+  "author": "Michael Ion",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maion308/mongodb-crud/issues"
+  },
+  "homepage": "https://github.com/maion308/mongodb-crud#readme",
+  "dependencies": {
+    "mongodb": "^4.9.0"
+  }
+}
