@@ -83,7 +83,8 @@ let games = [
 const main = async () => {
     try {
         await client.connect()
-        console.log('connected to mongodb')
+        await createListing(client, games)
+
     } catch (error) {
         console.error(error)
     } finally {
@@ -99,4 +100,7 @@ const createListing = async (client, document) => {
     .db(db)
     .collection(collection)
     .insertMany(document)
+
+    console.log(`${result.insertedCount} listings created with id(s)`)
+    console.log(result.insertedIds)
 }
