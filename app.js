@@ -84,7 +84,8 @@ const main = async () => {
     try {
         await client.connect()
         // await createListing(client, games)
-        await findAll(client)
+        // await findAll(client)
+        await findById(client, ObjectId("6308561a5ce17d1aed197476"))
     } catch (error) {
         console.error(error)
     } finally {
@@ -106,7 +107,7 @@ const createListing = async (client, document) => {
     console.log(result.insertedIds)
 }
 
-// 2. Read
+// 2a. Read
 const findAll = async (client) => {
     const cursor = await client 
     .db(db)
@@ -118,5 +119,20 @@ const findAll = async (client) => {
     }
     for await(const doc of cursor) {
         console.log(doc)
+    }
+}
+
+// 2b. Read (find listing by id by id)
+const findById = async (client, listId) => {
+    const result = await client
+    .db(db)
+    .collection(collection)
+    .findOne({_id: listId})
+
+    if(result) {
+        console.log(`Found listing with id ${listId}`)
+        console.log(result)
+    } else {
+        console.log(`No listing found with id: ${listId}`)
     }
 }
